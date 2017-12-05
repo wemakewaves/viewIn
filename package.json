@@ -1,0 +1,25 @@
+{
+  "name": "animate-inview",
+  "version": "0.0.1",
+  "description": "A dependency free utility to set and remove animation classes on elements as they become visible in the viewport, using the Intersection Observer API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Animation",
+    "inview",
+    "intersection",
+    "observer"
+  ],
+  "author": "Ryan Hyslop",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "typescript": "^2.6.2"
+  }
+}
