@@ -16,43 +16,37 @@ const defaultOptions: IAnimateInviewOptions = {
     triggerExitThreshold: 0.5
 }
 
-function observeElements(elements: HTMLElement[], callback: IIntersectionEntryCallback, options: IAnimateInviewOptions): void {
+function buildObserverCallBack(options: IAnimateInviewOptions): IntersectionObserverCallback {
+    return function callback (entries) {
+        entries.forEach(entry => {
+            let { intersectionRatio, target } = entry;
+            let { animationEnterClass, animationExitClass, triggerEnterThreshold, triggerExitThreshold } = options;
 
-    const threshold = [options.triggerEnterThreshold, options.triggerExitThreshold];
+            function isEntering() {
+                return intersectionRatio >= triggerEnterThreshold && !target.classList.contains(animationEnterClass)
+            }
 
-    const io = new IntersectionObserver(entries => entries.forEach(callback), {
-        threshold
-    });
+            function isExiting() {
+                console.log(intersectionRatio, triggerExitThreshold, target.classList.contains(animationEnterClass));
+                return intersectionRatio <= triggerExitThreshold && target.classList.contains(animationEnterClass)
+            }
 
-    elements.forEach(element => io.observe(element));
+            if (isEntering()) {
+                target.classList.add(animationEnterClass);
+                target.classList.remove(animationExitClass);
+            } else if (isExiting()) {
+                target.classList.remove(animationEnterClass);
+                target.classList.add(animationExitClass);
+            }
+        });
+    }
 }
 
-
 export function animateInView(selector: string, options: IAnimateInviewOptions = defaultOptions) {
-
     const elements = querySelectorAllToArray(selector);
+    const callback = buildObserverCallBack(options)
+    const threshold = [options.triggerEnterThreshold, options.triggerExitThreshold];
+    const io = new IntersectionObserver(callback, { threshold });
 
-    const callback = function (entry: IntersectionObserverEntry) {
-
-        let { intersectionRatio, target } = entry;
-        let { animationEnterClass, animationExitClass, triggerEnterThreshold, triggerExitThreshold } = options;
-
-        function isEntering() {
-            return intersectionRatio >= triggerEnterThreshold && !target.classList.contains(animationEnterClass)
-        }
-
-        function isExiting() {
-            return intersectionRatio <= triggerExitThreshold && target.classList.contains(animationEnterClass)
-        }
-
-        if (isEntering()) {
-            target.classList.add(animationEnterClass);
-            target.classList.remove(animationExitClass);
-        } else if (isExiting()) {
-            target.classList.remove(animationEnterClass);
-            target.classList.add(animationExitClass);
-        }
-    }
-
-    observeElements(elements, callback, options);
+    elements.forEach(element => io.observe(element));
 }
