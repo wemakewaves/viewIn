@@ -1,7 +1,7 @@
-export interface IAnimateInviewOptions {
-    animationEnterClass: string;
-    animationExitClass: string;
-    triggerEnterThreshold: number;
-    triggerExitThreshold: number;
+export interface IViewInOptions {
+    onEnterClass: string;
+    onExitClass: string;
+    enterThreshold: number;
+    exitThreshold: number;
 }
-export declare function animateInView(selector: string, options?: IAnimateInviewOptions): void;
+export declare function viewIn(selector: string, options?: IViewInOptions): IntersectionObserver;
