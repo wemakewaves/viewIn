@@ -21,6 +21,7 @@ A simple utility to apply and remove classes to DOM elements as they enter the v
 `enterThreshold` - what % of the element is visible in the viewport before classOnEnter is applied.
 
 ## To Do
-
+- Add IS feature detection
+- Error cases
 - `once: boolean` - only trigger the observerable once
 - Tidy up

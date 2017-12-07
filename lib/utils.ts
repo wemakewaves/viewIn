@@ -15,7 +15,7 @@ export function hasIntersectionObserverSupport(): boolean {
             Object.defineProperty( (<any>window).IntersectionObserverEntry.prototype,
                 'isIntersecting', {
                     get: function () {
-                        return this.intersectionRatio > 0;
+                        return (<any>this).intersectionRatio > 0;
                     }
                 });
         }
