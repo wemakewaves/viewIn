@@ -1,52 +1,53 @@
 import { querySelectorAllToArray } from './utils';
 
-export interface IAnimateInviewOptions {
-    animationEnterClass: string,
-    animationExitClass: string,
-    triggerEnterThreshold: number,
-    triggerExitThreshold: number
+export interface IViewInOptions {
+    onEnterClass: string,
+    onExitClass: string,
+    enterThreshold: number,
+    exitThreshold: number
 }
 
 type IIntersectionEntryCallback = (entry: IntersectionObserverEntry) => void;
 
-const defaultOptions: IAnimateInviewOptions = {
-    animationEnterClass: 'animate-inview',
-    animationExitClass: 'animate-outview',
-    triggerEnterThreshold: 0.5,
-    triggerExitThreshold: 0.5
+const defaultOptions: IViewInOptions = {
+    onEnterClass: 'animate-inview',
+    onExitClass: 'animate-outview',
+    enterThreshold: 0.5,
+    exitThreshold: 0.5
 }
 
-function buildObserverCallBack(options: IAnimateInviewOptions): IntersectionObserverCallback {
+function buildObserverCallBack(options: IViewInOptions): IntersectionObserverCallback {
     return function callback (entries) {
         entries.forEach(entry => {
             let { intersectionRatio, target } = entry;
-            let { animationEnterClass, animationExitClass, triggerEnterThreshold, triggerExitThreshold } = options;
+            let { onEnterClass, onExitClass, enterThreshold, exitThreshold } = options;
 
             function isEntering() {
-                return intersectionRatio >= triggerEnterThreshold && !target.classList.contains(animationEnterClass)
+                return intersectionRatio >= enterThreshold && !target.classList.contains(onEnterClass)
             }
 
             function isExiting() {
-                console.log(intersectionRatio, triggerExitThreshold, target.classList.contains(animationEnterClass));
-                return intersectionRatio <= triggerExitThreshold && target.classList.contains(animationEnterClass)
+                return intersectionRatio <= exitThreshold && target.classList.contains(onEnterClass)
             }
 
             if (isEntering()) {
-                target.classList.add(animationEnterClass);
-                target.classList.remove(animationExitClass);
+                target.classList.add(onEnterClass);
+                target.classList.remove(onExitClass);
             } else if (isExiting()) {
-                target.classList.remove(animationEnterClass);
-                target.classList.add(animationExitClass);
+                target.classList.remove(onEnterClass);
+                target.classList.add(onExitClass);
             }
         });
     }
 }
 
-export function animateInView(selector: string, options: IAnimateInviewOptions = defaultOptions) {
+export function viewIn(selector: string, options: IViewInOptions = defaultOptions): IntersectionObserver {
     const elements = querySelectorAllToArray(selector);
     const callback = buildObserverCallBack(options)
-    const threshold = [options.triggerEnterThreshold, options.triggerExitThreshold];
+    const threshold = [options.enterThreshold, options.exitThreshold];
     const io = new IntersectionObserver(callback, { threshold });
 
     elements.forEach(element => io.observe(element));
+
+    return io;
 }

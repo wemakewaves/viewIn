@@ -1,11 +1,11 @@
 {
-  "name": "animate-inview",
+  "name": "ViewIn",
   "version": "0.0.1",
   "description": "A dependency free utility to set and remove animation classes on elements as they become visible in the viewport, using the Intersection Observer API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": "test && npm run build",
     "build": "tsc",
     "test": "jest"
   },

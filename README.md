@@ -1,13 +1,13 @@
 `A work in progress do not use`
 
-# Animate-InView
+# ViewIn.js
 
-A simple utility to apply and remove classes to DOM elements as they enter the view port, using the Intersection Observer API
+A simple utility to apply and remove classes to DOM elements as they enter the view port, using the Intersection Observer API.
 
 
 ## Usage
 
-`animateInView('.my-selector', options);`
+`viewIn('.my-selector', options);`
 
 
 ## Options
