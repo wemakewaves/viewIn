@@ -41,7 +41,7 @@ function buildObserverCallBack(options: IViewInOptions): IntersectionObserverCal
     }
 }
 
-export function viewIn(selector: string, options: IViewInOptions = defaultOptions): IntersectionObserver {
+export default function viewIn(selector: string, options: IViewInOptions = defaultOptions): IntersectionObserver {
     const elements = querySelectorAllToArray(selector);
     const callback = buildObserverCallBack(options)
     const threshold = [options.enterThreshold, options.exitThreshold];

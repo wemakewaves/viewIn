@@ -4,4 +4,4 @@ export interface IViewInOptions {
     enterThreshold: number;
     exitThreshold: number;
 }
-export declare function viewIn(selector: string, options?: IViewInOptions): IntersectionObserver;
+export default function viewIn(selector: string, options?: IViewInOptions): IntersectionObserver;

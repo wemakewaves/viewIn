@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "prepublish": "npm t && npm run build",
+    "prebuild": "shx rm -rf dist/",
     "build": "tsc",
     "test": "jest"
   },
@@ -19,8 +20,11 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "coveragePathIgnorePatterns": ["./node_modules", "./dist"],
+    "testRegex": ".test.ts$",
+    "coveragePathIgnorePatterns": [
+      "./node_modules",
+      "./dist"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -34,6 +38,7 @@
   "devDependencies": {
     "@types/jest": "^21.1.8",
     "jest": "^21.2.1",
+    "shx": "^0.2.2",
     "ts-jest": "^21.2.4",
     "typescript": "^2.6.2"
   }

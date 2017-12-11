@@ -1,5 +1,5 @@
 export function querySelectorAllToArray(selector: string): HTMLElement[] {
-    return Array.prototype.slice.call(document.querySelector(selector));
+    return Array.prototype.slice.call(document.querySelectorAll(selector));
 }
 
 

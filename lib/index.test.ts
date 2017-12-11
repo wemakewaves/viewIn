@@ -2,7 +2,7 @@ import { IViewInOptions } from './';
 import * as utils from './utils';
 jest.mock('./utils');
 
-import { viewIn } from './index';
+import viewIn from './index';
 
 const DEFAULT_OPTIONS: IViewInOptions = {
     onEnterClass: 'on-enter-classname',
