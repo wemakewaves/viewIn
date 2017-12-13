@@ -1,7 +1,6 @@
 import { IViewInOptions } from './';
-import * as utils from './utils';
+import { querySelectorAllToArray } from './utils';
 jest.mock('./utils');
-
 import viewIn from './index';
 
 const DEFAULT_OPTIONS: IViewInOptions = {
@@ -29,25 +28,25 @@ function elementFactory() {
     }
 }
 
-// must be a better way to do this ;
 describe('Animate into view', () => {
 
     let elements: any[];
-    let observeMock: jest.Mock;
+    let observeMock: jest.Mock = jest.fn();
+    let IntersectionObserver: jest.Mock = (<any>window).IntersectionObserver = jest.fn(() => ({ observe: observeMock }));
 
     beforeEach(() => {
-
         elements = ["element", "element", "element"];
-        observeMock = jest.fn();
+        (<jest.Mock>querySelectorAllToArray).mockReturnValue(elements);
+    });
 
-        // must be a better way to do this;
-        (<any>window).IntersectionObserver = jest.fn(() => ({ observe: observeMock }));
-        (<any>utils).querySelectorAllToArray = jest.fn().mockReturnValue(elements);
+    afterEach( () => {
+        IntersectionObserver.mockClear()
+        observeMock.mockClear();
     });
 
     it('convert the selector string into an array of node lists', () => {
         viewIn('.element', DEFAULT_OPTIONS);
-        expect(utils.querySelectorAllToArray).toBeCalledWith('.element');
+        expect(querySelectorAllToArray).toBeCalledWith('.element');
     });
 
     it('should create one IntersectionObserver for the selector called', () => {
@@ -63,9 +62,11 @@ describe('Animate into view', () => {
     describe('options', () => {
 
         it('should pass the enterThreshold and exitThreshold to the intersection observer as threshold array', () => {
-
             viewIn('.element', DEFAULT_OPTIONS);
-            expect((<any>IntersectionObserver).mock.calls[0][1]).toEqual({
+
+            const intersectionObserverOptions = IntersectionObserver.mock.calls[0][1];
+
+            expect(intersectionObserverOptions).toEqual({
                 threshold: [DEFAULT_OPTIONS.enterThreshold, DEFAULT_OPTIONS.exitThreshold]
             });
 
@@ -80,7 +81,7 @@ describe('Animate into view', () => {
 
         beforeEach(() => {
             viewIn('.element', DEFAULT_OPTIONS);
-            intersectionCallback = (<any>IntersectionObserver).mock.calls[0][0];
+            intersectionCallback = IntersectionObserver.mock.calls[0][0];
         })
 
         it('should not add any class if the intersectionRatio is below the entry threshold', () => {
