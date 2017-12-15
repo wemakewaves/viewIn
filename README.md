@@ -1,27 +1,24 @@
-`A work in progress do not use`
-
 # ViewIn.js
 
-A simple utility to apply and remove classes to DOM elements as they enter the view port, using the Intersection Observer API.
-
+ViewIn(tersector) is a simple utility to apply and remove classes to DOM elements as they enter the view port, using the Intersection Observer API.
 
 ## Usage
 
 `viewIn('.my-selector', options);`
 
-
 ## Options
 
-`classOnEnter` - css class name to add when an element enters the viewport
-
-`classOnExit` - css class name to add when an element leaves the view port
-
-`exitThreshold` - what % of the element is remaining in the viewport before classOnExit is applied
-
-`enterThreshold` - what % of the element is visible in the viewport before classOnEnter is applied.
+| Option         | Type   | Default      | Description                                     |
+| :------------- | :----- | :----------- | :---------------------------------------------- |
+| classOnEnter   | string | inview-enter | Class added when element is visible             |
+| classOnExit    | string | inview-exit  | Class added was visible but then exits viewport |
+| exitThreshold  | number | 0.75         | % of element visible to trigger exit            |
+| enterThreshold | number | 0.75         | % of element visible to trigger enter           |
 
 ## To Do
-- Add IS feature detection
-- Error cases
-- `once: boolean` - only trigger the observerable once
-- Tidy up
+
+* Add Interes feature detection
+* Allow a callback to be passed for exit and enter
+* Make options ... optional
+* Error cases
+* `once: boolean` - only trigger the observerable once

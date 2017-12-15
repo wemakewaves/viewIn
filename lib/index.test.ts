@@ -1,5 +1,5 @@
 import { IViewInOptions } from './';
-import { querySelectorAllToArray } from './utils';
+import { querySelectorAllToArray, hasIntersectionObserverSupport } from './utils';
 jest.mock('./utils');
 import viewIn from './index';
 
@@ -28,7 +28,7 @@ function elementFactory() {
     }
 }
 
-describe('Animate into view', () => {
+describe('viewIn', () => {
 
     let elements: any[];
     let observeMock: jest.Mock = jest.fn();
@@ -36,12 +36,27 @@ describe('Animate into view', () => {
 
     beforeEach(() => {
         elements = ["element", "element", "element"];
+        (<jest.Mock>hasIntersectionObserverSupport).mockReturnValue(true);
         (<jest.Mock>querySelectorAllToArray).mockReturnValue(elements);
     });
 
     afterEach( () => {
         IntersectionObserver.mockClear()
         observeMock.mockClear();
+    });
+
+    describe('Intersection observer feature detection', () => {
+
+        it('should throw an error if the intersection observer detection fails', () => {
+            (<jest.Mock>hasIntersectionObserverSupport).mockReturnValue(false);
+            expect(() => viewIn('.element', DEFAULT_OPTIONS)).toThrowError('Intersection Observer not detected. Consider the polyfill: https://www.npmjs.com/package/intersection-observer');
+        });
+
+        it('should not throw an error if the intersection observer detection succeeds', () => {
+            (<jest.Mock>hasIntersectionObserverSupport).mockReturnValue(true);
+            expect(() => viewIn('.element', DEFAULT_OPTIONS)).not.toThrowError('Intersection Observer not detected. Consider the polyfill: https://www.npmjs.com/package/intersection-observer');
+        });
+
     });
 
     it('convert the selector string into an array of node lists', () => {

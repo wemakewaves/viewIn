@@ -1,4 +1,4 @@
-import { querySelectorAllToArray } from './utils';
+import { querySelectorAllToArray, hasIntersectionObserverSupport } from './utils';
 
 export interface IViewInOptions {
     onEnterClass: string,
@@ -10,8 +10,8 @@ export interface IViewInOptions {
 type IIntersectionEntryCallback = (entry: IntersectionObserverEntry) => void;
 
 const defaultOptions: IViewInOptions = {
-    onEnterClass: 'animate-inview',
-    onExitClass: 'animate-outview',
+    onEnterClass: 'inview-enter',
+    onExitClass: 'inview-exit',
     enterThreshold: 0.5,
     exitThreshold: 0.5
 }
@@ -42,6 +42,11 @@ function buildObserverCallBack(options: IViewInOptions): IntersectionObserverCal
 }
 
 export default function viewIn(selector: string, options: IViewInOptions = defaultOptions): IntersectionObserver {
+    
+    if (!hasIntersectionObserverSupport()) {
+        throw new Error('Intersection Observer not detected. Consider the polyfill: https://www.npmjs.com/package/intersection-observer')
+    }
+    
     const elements = querySelectorAllToArray(selector);
     const callback = buildObserverCallBack(options)
     const threshold = [options.enterThreshold, options.exitThreshold];

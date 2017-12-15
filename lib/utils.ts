@@ -19,8 +19,8 @@ export function hasIntersectionObserverSupport(): boolean {
                     }
                 });
         }
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }

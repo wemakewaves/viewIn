@@ -11,8 +11,8 @@
     Object.defineProperty(exports, "__esModule", { value: true });
     var utils_1 = require("./utils");
     var defaultOptions = {
-        onEnterClass: 'animate-inview',
-        onExitClass: 'animate-outview',
+        onEnterClass: 'inview-enter',
+        onExitClass: 'inview-exit',
         enterThreshold: 0.5,
         exitThreshold: 0.5
     };
@@ -40,6 +40,9 @@
     }
     function viewIn(selector, options) {
         if (options === void 0) { options = defaultOptions; }
+        if (!utils_1.hasIntersectionObserverSupport()) {
+            throw new Error('Intersection Observer not detected. Consider the polyfill: https://www.npmjs.com/package/intersection-observer');
+        }
         var elements = utils_1.querySelectorAllToArray(selector);
         var callback = buildObserverCallBack(options);
         var threshold = [options.enterThreshold, options.exitThreshold];
